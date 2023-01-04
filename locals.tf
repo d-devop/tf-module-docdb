@@ -3,3 +3,4 @@ locals {
   app_subnets_cidr = lookup(lookup(var.vpc, var.env, null), "app_subnets_cidr", null)
   app_subnets_ids  = lookup(lookup(var.vpc, var.env, null), "app_subnets_ids", null)
 }
+
