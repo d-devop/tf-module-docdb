@@ -1,3 +1,12 @@
+resource "aws_docdb_subnet_group" "docdb" {
+  name       = "${var.env}-docdb"
+  subnet_ids = local.app_subnets_ids
+
+  tags = {
+    Name = "${var.env}-docdb"
+  }
+}
+
 resource "aws_docdb_cluster" "docdb" {
   cluster_identifier      = "${var.env}-docdb"
   engine                  = var.engine
@@ -8,3 +17,9 @@ resource "aws_docdb_cluster" "docdb" {
   skip_final_snapshot     = var.skip_final_snapshot
 }
 
+resource "aws_docdb_cluster_instance" "instances" {
+  count              = var.instance_count
+  identifier         = "${var.env}-docdb-${count.index}"
+  cluster_identifier = aws_docdb_cluster.docdb.id
+  instance_class     = var.instance_class
+}
